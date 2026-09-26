@@ -873,7 +873,7 @@ def gerar_coeficientes_ols(df, col_alvo, cols_base, saida_graficos):
         return
 
     regressores = [c for c in cols_base
-                   if c != col_alvo and c not in ('pib_per_capita',)
+                   if c != col_alvo and c not in ('pib_per_capita', 'inadimplencia_pf', 'inadimplencia_pj')
                    and c in df.columns]
     if not regressores:
         return

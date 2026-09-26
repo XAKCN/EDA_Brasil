@@ -81,8 +81,8 @@ def carregar_desemprego_ibge(data_inicial='2015-01-01', data_final='2025-12-31',
                 periodo_str = str(periodo).strip()
                 if '.' in periodo_str:
                     ano_s, tri_s = periodo_str.split('.')
-                elif len(periodo_str) == 5:
-                    ano_s, tri_s = periodo_str[:4], periodo_str[4]
+                elif len(periodo_str) in (5, 6):
+                    ano_s, tri_s = periodo_str[:4], periodo_str[4:]
                 else:
                     continue
                 mes_inicio = {1: 1, 2: 4, 3: 7, 4: 10}.get(int(tri_s), 1)
@@ -125,7 +125,7 @@ def carregar_desemprego_ibge(data_inicial='2015-01-01', data_final='2025-12-31',
 def carregar_ipca_ibge(data_inicial='2015-01-01', data_final='2025-12-31', csv_saida=None):
     """
     Busca IPCA mensal (variacao % no mes) via API IBGE SIDRA.
-    Tabela 1737 (IPCA - indice geral), variavel 2265.
+    Tabela 1737 (IPCA - indice geral), variavel 63.
     Complementa o SGS 13522 que fornece o acumulado 12 meses.
     """
     if csv_saida and Path(csv_saida).exists():
@@ -136,7 +136,7 @@ def carregar_ipca_ibge(data_inicial='2015-01-01', data_final='2025-12-31', csv_s
 
     url = (
         "https://servicodados.ibge.gov.br/api/v3/agregados/1737"
-        "/periodos/all/variaveis/2265?localidades=BR"
+        "/periodos/all/variaveis/63?localidades=BR"
     )
     try:
         resp = requests.get(url, timeout=30)
@@ -217,7 +217,7 @@ def carregar_olinda_credito(csv_saida, top=50000):
 def carregar_pib_ibge(data_inicial=2015, data_final=2025, csv_saida=None):
     """
     Busca PIB per capita (R$ correntes) via IBGE SIDRA - anual.
-    Tabela 6783 (PIB per capita), variavel 9812.
+    Tabela 6784 (PIB per capita), variavel 9812.
     """
     if csv_saida and Path(csv_saida).exists():
         df = pd.read_csv(csv_saida)
@@ -226,7 +226,7 @@ def carregar_pib_ibge(data_inicial=2015, data_final=2025, csv_saida=None):
         return df
 
     url = (
-        "https://servicodados.ibge.gov.br/api/v3/agregados/6783"
+        "https://servicodados.ibge.gov.br/api/v3/agregados/6784"
         "/periodos/all/variaveis/9812?localidades=BR"
     )
     try:
